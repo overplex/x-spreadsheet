@@ -34,7 +34,7 @@
 ## NPM
 
 ```shell
-npm install x-data-spreadsheet
+npm install @overplex/x-data-spreadsheet
 ```
 
 ```html
@@ -179,7 +179,7 @@ new Spreadsheet(document.getElementById('xss-demo'));
 ## Development
 
 ```sheel
-git clone https://github.com/myliang/x-spreadsheet.git
+git clone https://github.com/overplex/x-spreadsheet.git
 cd x-spreadsheet
 npm install
 npm run dev
