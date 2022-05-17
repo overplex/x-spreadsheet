@@ -162,6 +162,45 @@ declare module 'x-data-spreadsheet' {
       sheetIndex: number
     ): CellStyle;
     /**
+     * Set cell style
+     * @param rowIndex
+     * @param colIndex
+     * @param property
+     * @param value
+     * @param sheetIndex
+     */
+    setCellStyle(
+        rowIndex: number,
+        colIndex: number,
+        property: string,
+        value: any,
+        sheetIndex: number
+    ): this;
+    /**
+     * Merge cells range A1:B2
+     * @param range
+     * @param sheetIndex
+     */
+    mergeCellsRange(
+        range: string,
+        sheetIndex: number
+    ): this;
+    /**
+     * Merge cells
+     * @param rowIndex1
+     * @param colIndex1
+     * @param rowIndex2
+     * @param colIndex2
+     * @param sheetIndex
+     */
+    mergeCells(
+        rowIndex1: number,
+        colIndex1: number,
+        rowIndex2: number,
+        colIndex2: number,
+        sheetIndex: number
+    ): this;
+    /**
      * get/set cell text
      * @param rowIndex
      * @param colIndex
@@ -202,7 +241,7 @@ declare module 'x-data-spreadsheet' {
   }
   global {
     interface Window {
-      x_spreadsheet(container: string | HTMLElement, opts?: Options): Spreadsheet; 
+      x_spreadsheet(container: string | HTMLElement, opts?: Options): Spreadsheet;
     }
   }
 }

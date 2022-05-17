@@ -1,11 +1,13 @@
 /* global window, document */
 import { h } from './component/element';
 import DataProxy from './core/data_proxy';
+import helper from './core/helper';
 import Sheet from './component/sheet';
 import Bottombar from './component/bottombar';
 import { cssPrefix } from './config';
 import { locale } from './locale/locale';
 import './index.less';
+import { CellRange } from './core/cell_range';
 
 
 class Spreadsheet {
@@ -101,6 +103,62 @@ class Spreadsheet {
 
   cellStyle(ri, ci, sheetIndex = 0) {
     return this.datas[sheetIndex].getCellStyle(ri, ci);
+  }
+
+  setCellStyle(ri, ci, property, value, sheetIndex = 0) {
+    const dataProxy = this.datas[sheetIndex];
+    const { styles, rows } = dataProxy;
+    const cell = rows.getCellOrNew(ri, ci);
+    let cstyle = {};
+    if (cell.style !== undefined) {
+      cstyle = helper.cloneDeep(styles[cell.style]);
+    }
+    if (property === 'format') {
+      cstyle.format = value;
+      cell.style = dataProxy.addStyle(cstyle);
+    } else if (
+      property === 'font-bold'
+      || property === 'font-italic'
+      || property === 'font-name'
+      || property === 'font-size'
+    ) {
+      const nfont = {};
+      nfont[property.split('-')[1]] = value;
+      cstyle.font = Object.assign(cstyle.font || {}, nfont);
+      cell.style = dataProxy.addStyle(cstyle);
+    } else if (
+      property === 'strike'
+      || property === 'textwrap'
+      || property === 'underline'
+      || property === 'align'
+      || property === 'valign'
+      || property === 'color'
+      || property === 'bgcolor'
+    ) {
+      cstyle[property] = value;
+      cell.style = dataProxy.addStyle(cstyle);
+    } else {
+      cell[property] = value;
+    }
+    return this;
+  }
+
+  mergeCellsRange(range, sheetIndex = 0) {
+    return this.mergeCellsInner(CellRange.valueOf(range), sheetIndex);
+  }
+
+  mergeCells(sri, sci, eri, eci, sheetIndex = 0) {
+    return this.mergeCellsInner(new CellRange(sri, sci, eri, eci), sheetIndex);
+  }
+
+  mergeCellsInner(cr, sheetIndex = 0) {
+    const dataProxy = this.datas[sheetIndex];
+    const cell = dataProxy.rows.getCellOrNew(cr.sri, cr.sci);
+    cell.merge = [cr.eri - cr.sri, cr.eci - cr.sci];
+    dataProxy.merges.add(cr);
+    dataProxy.rows.deleteCells(cr);
+    dataProxy.rows.setCell(cr.sri, cr.sci, cell);
+    return this;
   }
 
   reRender() {

@@ -116,7 +116,13 @@
 
       setTimeout(() => {
         // xs.loadData([{ rows }]);
-        xs.cellText(14, 3, 'cell-text').reRender();
+        xs.mergeCellsRange('C6:D9');
+        xs.setCellStyle(5, 2, 'color', '#FF00FF');
+        xs.mergeCells(4, 4, 7, 7);
+        xs.setCellStyle(4, 4, 'bgcolor', 'red');
+        xs.cellText(5, 2, 'test-text');
+        xs.cellText(14, 3, 'cell-text');
+        xs.reRender();
         console.log('cell(8, 8):', xs.cell(8, 8));
         console.log('cellStyle(8, 8):', xs.cellStyle(8, 8));
       }, 5000);
