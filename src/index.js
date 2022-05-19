@@ -143,6 +143,24 @@ class Spreadsheet {
     return this;
   }
 
+  setCellBorderStyle(ri, ci, mode, style, color, sheetIndex = 0) {
+    const dataProxy = this.datas[sheetIndex];
+    const { styles, rows } = dataProxy;
+    const cell = rows.getCellOrNew(ri, ci);
+    let cstyle = {};
+
+    if (cell.style !== undefined) {
+      cstyle = helper.cloneDeep(styles[cell.style]);
+    }
+
+    const bss = {};
+    bss[mode] = [style, color];
+    cstyle = helper.merge(cstyle, { border: bss });
+    cell.style = dataProxy.addStyle(cstyle);
+
+    return this;
+  }
+
   mergeCellsRange(range, sheetIndex = 0) {
     return this.mergeCellsInner(CellRange.valueOf(range), sheetIndex);
   }

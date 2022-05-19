@@ -86,9 +86,9 @@
               textwrap: true,
               color: '#900b09',
               border: {
-                top: ['thin', '#0366d6'],
-                bottom: ['thin', '#0366d6'],
-                right: ['thin', '#0366d6'],
+                top: ['dotted', '#0366d6'],
+                bottom: ['medium', '#0366d6'],
+                right: ['dashed', '#0366d6'],
                 left: ['thin', '#0366d6'],
               },
             },
@@ -122,6 +122,10 @@
         xs.setCellStyle(4, 4, 'bgcolor', 'red');
         xs.cellText(5, 2, 'test-text');
         xs.cellText(14, 3, 'cell-text');
+        xs.setCellBorderStyle(10, 2, 'top', 'thin', '#ff0000');
+        xs.setCellBorderStyle(10, 2, 'right', 'medium', '#00ff00');
+        xs.setCellBorderStyle(10, 2, 'bottom', 'double', '#0000ff');
+        xs.setCellBorderStyle(10, 2, 'left', 'dashed', '#ff00ff');
         xs.reRender();
         console.log('cell(8, 8):', xs.cell(8, 8));
         console.log('cellStyle(8, 8):', xs.cellStyle(8, 8));

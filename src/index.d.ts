@@ -159,7 +159,7 @@ declare module 'x-data-spreadsheet' {
     cellStyle(
       rowIndex: number,
       colIndex: number,
-      sheetIndex: number
+      sheetIndex?: number
     ): CellStyle;
     /**
      * Set cell style
@@ -174,7 +174,24 @@ declare module 'x-data-spreadsheet' {
         colIndex: number,
         property: string,
         value: any,
-        sheetIndex: number
+        sheetIndex?: number
+    ): this;
+    /**
+     * Set cell borders style
+     * @param rowIndex
+     * @param colIndex
+     * @param mode
+     * @param style thin, medium, thick, dotted, dashed, double
+     * @param color
+     * @param sheetIndex
+     */
+    setCellBorderStyle(
+        rowIndex: number,
+        colIndex: number,
+        mode: string,
+        style: string,
+        color: string,
+        sheetIndex?: number
     ): this;
     /**
      * Merge cells range A1:B2
@@ -183,7 +200,7 @@ declare module 'x-data-spreadsheet' {
      */
     mergeCellsRange(
         range: string,
-        sheetIndex: number
+        sheetIndex?: number
     ): this;
     /**
      * Merge cells
@@ -198,7 +215,7 @@ declare module 'x-data-spreadsheet' {
         colIndex1: number,
         rowIndex2: number,
         colIndex2: number,
-        sheetIndex: number
+        sheetIndex?: number
     ): this;
     /**
      * get/set cell text
