@@ -15,6 +15,11 @@ const tableGridStyle = {
   lineWidth: thinLineWidth,
   strokeStyle: '#e6e6e6',
 };
+const tableGridStyleStriped = {
+  fillStyle: '#fff',
+  lineWidth: thinLineWidth,
+  strokeStyle: '#000',
+};
 function tableFixedHeaderStyle() {
   return {
     textAlign: 'center',
@@ -258,7 +263,7 @@ function renderFixedLeftTopCell(fw, fh) {
 
 function renderContentGrid({
   sri, sci, eri, eci, w, h,
-}, fw, fh, tx, ty) {
+}, fw, fh, tx, ty, striped = false) {
   const { draw, data } = this;
   const { settings } = data;
 
@@ -274,15 +279,30 @@ function renderContentGrid({
     return;
   }
   // console.log('rowStart:', rowStart, ', rowLen:', rowLen);
-  data.rowEach(sri, eri, (i, y, ch) => {
-    // console.log('y:', y);
-    if (i !== sri) draw.line([0, y], [w, y]);
-    if (i === eri) draw.line([0, y + ch], [w, y + ch]);
-  });
+
   data.colEach(sci, eci, (i, x, cw) => {
     if (i !== sci) draw.line([x, 0], [x, h]);
     if (i === eci) draw.line([x + cw, 0], [x + cw, h]);
   });
+
+  if (striped && settings.stripedLines.show) {
+    tableGridStyleStriped.strokeStyle = settings.stripedLines.color;
+    data.rowEach(sri, eri, (i, y, ch) => {
+      if ((i + settings.stripedLines.offset) % settings.stripedLines.amount === 0) {
+        draw.attr(tableGridStyleStriped);
+      } else {
+        draw.attr(tableGridStyle);
+      }
+      if (i !== sri) draw.line([0, y], [w, y]);
+      if (i === eri) draw.line([0, y + ch], [w, y + ch]);
+    });
+  } else {
+    data.rowEach(sri, eri, (i, y, ch) => {
+      if (i !== sri) draw.line([0, y], [w, y]);
+      if (i === eri) draw.line([0, y + ch], [w, y + ch]);
+    });
+  }
+
   draw.restore();
 }
 
@@ -329,7 +349,7 @@ class Table {
     const ty = data.freezeTotalHeight();
     const { x, y } = data.scroll;
     // 1
-    renderContentGrid.call(this, viewRange, fw, fh, tx, ty);
+    renderContentGrid.call(this, viewRange, fw, fh, tx, ty, true);
     renderContent.call(this, viewRange, fw, fh, -x, -y);
     renderFixedHeaders.call(this, 'all', viewRange, fw, fh, tx, ty);
     renderFixedLeftTopCell.call(this, fw, fh);

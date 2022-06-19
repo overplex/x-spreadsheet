@@ -104,6 +104,12 @@ const defaultSettings = {
     },
     format: 'normal',
   },
+  stripedLines: {
+    show: false,
+    offset: 0,
+    amount: 2,
+    color: '#000'
+  }
 };
 
 const toolbarHeight = 41;
