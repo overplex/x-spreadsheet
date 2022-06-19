@@ -206,6 +206,10 @@ class CellRange {
   }
 
   static valueOf(ref) {
+    if (Array.isArray(ref)) {
+      const [sri, sci, eri, eci] = ref;
+      return new CellRange(sri, sci, eri, eci);
+    }
     // B1:B8, B1 => 1 x 1 cell range
     const refs = ref.split(':');
     const [sci, sri] = expr2xy(refs[0]);
