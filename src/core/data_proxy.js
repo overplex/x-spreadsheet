@@ -74,6 +74,7 @@ const defaultSettings = {
     height: () => document.documentElement.clientHeight,
     width: () => document.documentElement.clientWidth,
   },
+  history: true,
   showGrid: true,
   showToolbar: true,
   showContextmenu: true,
@@ -1015,8 +1016,10 @@ export default class DataProxy {
   setCellText(ri, ci, text, state) {
     const { rows, history, validations } = this;
     if (state === 'finished') {
-      rows.setCellText(ri, ci, '');
-      history.add(this.getData());
+      if (this.settings.history) {
+        rows.setCellText(ri, ci, '');
+        history.add(this.getData());
+      }
       rows.setCellText(ri, ci, text);
     } else {
       rows.setCellText(ri, ci, text);
@@ -1209,7 +1212,9 @@ export default class DataProxy {
   }
 
   changeData(cb) {
-    this.history.add(this.getData());
+    if (this.settings.history) {
+      this.history.add(this.getData());
+    }
     cb();
     this.change(this.getData());
   }
