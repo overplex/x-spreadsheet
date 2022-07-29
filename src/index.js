@@ -15,6 +15,7 @@ class Spreadsheet {
     let targetEl = selectors;
     this.options = { showBottomBar: true, ...options };
     this.sheetIndex = 1;
+    this.activeSheetIndex = 0;
     this.datas = [];
     if (typeof selectors === 'string') {
       targetEl = document.querySelector(selectors);
@@ -26,6 +27,7 @@ class Spreadsheet {
     }, (index) => {
       const d = this.datas[index];
       this.sheet.resetData(d);
+      this.activeSheetIndex = index;
     }, () => {
       this.deleteSheet();
     }, (index, value) => {
