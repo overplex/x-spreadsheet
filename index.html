@@ -113,14 +113,20 @@
         });
 
       xs.on('cell-selected', (cell, ri, ci) => {
-          console.log('cell:', cell, ', ri:', ri, ', ci:', ci, ', sheet:', xs.activeSheetIndex);
-        }).on('cell-edit', (text, ri, ci) => {
-          console.log('text:', text, ', ri: ', ri, ', ci:', ci);
-        }).on('cell-edited', (text, ri, ci) => {
-          console.log('finish text:', text, ', ri: ', ri, ', ci:', ci);
-        }).on('pasted-clipboard', (data) => {
-          console.log('>>>> data is ', data);
-        });
+        console.log('cell-selected:', cell, ', ri: ' + ri + ', ci: ' + ci + ', sheet: ' + xs.activeSheetIndex);
+      }).on('cell-edit', (text, ri, ci) => {
+        console.log('cell-edit: ' + text + ', ri: ' + ri + ', ci: ', ci);
+      }).on('cell-edited', (text, ri, ci) => {
+        console.log('cell-edited: ' + text + ', ri: ' + ri + ', ci: ' + ci);
+      }).on('pasted-clipboard', (data) => {
+        console.log('pasted-clipboard: ' + data);
+      }).on('sheet-changed', (data) => {
+        console.log('sheet-changed: ' + data);
+      }).on('sheet-name-changed', (data) => {
+        console.log('sheet-name-changed: ' + data);
+      }).on('sheet-data-changed', (data) => {
+        console.log('sheet-data-changed:', data);
+      });
 
       setTimeout(() => {
         // xs.loadData([{ rows }]);

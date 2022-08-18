@@ -458,6 +458,7 @@ function editorSet() {
 
 function verticalScrollbarMove(distance) {
   const { data, table, selector } = this;
+  this.trigger('vertical-scrollbar-move', distance);
   data.scrolly(distance, () => {
     selector.resetBRLAreaOffset();
     editorSetOffset.call(this);
@@ -467,6 +468,7 @@ function verticalScrollbarMove(distance) {
 
 function horizontalScrollbarMove(distance) {
   const { data, table, selector } = this;
+  this.trigger('horizontal-scrollbar-move', distance);
   data.scrollx(distance, () => {
     selector.resetBRTAreaOffset();
     editorSetOffset.call(this);

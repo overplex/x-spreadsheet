@@ -24,15 +24,20 @@ class Spreadsheet {
       if (this.options.mode === 'read') return;
       const d = this.addSheet();
       this.sheet.resetData(d);
+      this.activeSheetIndex = this.datas.length - 1;
+      this.sheet.trigger('sheet-changed', this.activeSheetIndex);
     }, (index) => {
       const d = this.datas[index];
       this.sheet.resetData(d);
       this.activeSheetIndex = index;
+      this.sheet.trigger('sheet-changed', index);
     }, () => {
-      this.deleteSheet();
+      let index = this.deleteSheet();
+      this.activeSheetIndex = index;
+      this.sheet.trigger('sheet-changed', index);
     }, (index, value) => {
       this.datas[index].name = value;
-      this.sheet.trigger('change');
+      this.sheet.trigger('sheet-name-changed', index);
     }) : null;
     this.data = this.addSheet();
     const rootEl = h('div', `${cssPrefix}`)
@@ -49,7 +54,7 @@ class Spreadsheet {
     const n = name || `sheet${this.sheetIndex}`;
     const d = new DataProxy(n, this.options);
     d.change = (...args) => {
-      this.sheet.trigger('change', ...args);
+      this.sheet.trigger('sheet-data-changed', ...args);
     };
     this.datas.push(d);
     // console.log('d:', n, d, this.datas);
@@ -61,14 +66,15 @@ class Spreadsheet {
   }
 
   deleteSheet() {
-    if (this.bottombar === null) return;
+    if (this.bottombar === null) return -1;
 
-    const [oldIndex, nindex] = this.bottombar.deleteItem();
+    const [oldIndex, newIndex] = this.bottombar.deleteItem();
     if (oldIndex >= 0) {
       this.datas.splice(oldIndex, 1);
-      if (nindex >= 0) this.sheet.resetData(this.datas[nindex]);
-      this.sheet.trigger('change');
+      if (newIndex >= 0) this.sheet.resetData(this.datas[newIndex]);
     }
+
+    return newIndex;
   }
 
   loadData(data) {
