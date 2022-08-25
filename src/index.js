@@ -90,6 +90,8 @@ class Spreadsheet {
         nd.setData(it);
         if (i === 0) {
           this.sheet.resetData(nd);
+          this.activeSheetIndex = 0;
+          this.sheet.trigger('sheet-changed', 0);
         }
       }
     }
